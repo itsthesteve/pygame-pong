@@ -40,10 +40,18 @@ class PaddleManager():
     self.paddles = [p1, p2]
 
   def draw(self):
+    """
+    Iterate and blit each paddle to the screen
+    """
     for p in self.paddles:
       self.screen.blit(p.srf, p.position)
 
   def listen_for_keys(self) -> None:
+    """
+    Update the Y coordinate for the player 1 paddle, keeping it within
+    the top and bottom constraints.
+    TODO: Maybe a built-in exists for this
+    """
     keys = pygame.key.get_pressed()
     p1, _ = self.paddles
 
