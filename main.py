@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import objects.paddle as p
+# YAH: import objects.ball
 
 clock = pygame.time.Clock()
 
