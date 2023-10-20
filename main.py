@@ -4,6 +4,8 @@ import objects.paddle as p
 
 clock = pygame.time.Clock()
 
+TICK_RATE = 60 # 60fps
+
 def main():
   pygame.init()
   screen = pygame.display.set_mode((720, 500))
@@ -19,7 +21,8 @@ def main():
   pygame.display.flip()
 
   while True:
-    clock.tick(60)
+    clock.tick(TICK_RATE)
+
     for event in pygame.event.get():
       if event.type == QUIT:
         return
