@@ -25,8 +25,6 @@ def main():
   pygame.display.flip()
 
   while True:
-    clock.tick(TICK_RATE)
-
     for event in pygame.event.get():
       if event.type == QUIT:
         return
@@ -38,6 +36,7 @@ def main():
     ball.update()
 
     pygame.display.flip()
+    clock.tick(TICK_RATE)
 
 if __name__ == '__main__':
   main()
