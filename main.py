@@ -1,7 +1,6 @@
 import pygame
 from pygame.locals import *
-import objects.paddle as p
-# YAH: import objects.ball
+from objects import paddle, ball as b
 
 clock = pygame.time.Clock()
 
@@ -15,9 +14,13 @@ def main():
   bg = pygame.Surface(screen.get_size()).convert()
   bg.fill((30, 30, 30))
 
-  mgr = p.PaddleManager(screen)
-  mgr.draw()
+  mgr = paddle.PaddleManager(screen)
+  ball = b.Ball(24, screen)
 
+  mgr.update()
+  ball.update()
+
+  # Draw everything first, text etc
   screen.blit(bg, (0,0))
   pygame.display.flip()
 
@@ -28,10 +31,11 @@ def main():
       if event.type == QUIT:
         return
 
+    # Redraw background
     screen.blit(bg, (0, 0))
 
-    mgr.listen_for_keys()
-    mgr.draw()
+    mgr.update()
+    ball.update()
 
     pygame.display.flip()
 
