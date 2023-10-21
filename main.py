@@ -9,19 +9,12 @@ TICK_RATE = 60 # 60fps
 def main():
   pygame.init()
   screen = pygame.display.set_mode((720, 512))
-  # score = 0
 
   title_font = pygame.font.Font("pong-font.ttf", 32)
-  # score_font = pygame.font.Font("pong-font.ttf", 72)
-
   title_text = title_font.render("Pong", True, (100, 100, 100))
-  # score_text = score_font.render(str(score), False, (200, 200, 200))
 
   title_text_rect = title_text.get_rect()
   title_text_pos = (screen.get_width() / 2 - title_text_rect.width / 2, 32)
-
-  # score_text_rect = score_text.get_rect()
-  # score_text_pos = (screen.get_width() / 2 - score_text_rect.width / 2, 72)
 
   pygame.display.set_caption("Pong")
 
