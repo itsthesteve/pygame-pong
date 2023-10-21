@@ -27,4 +27,6 @@ $> python3 main.py
 
 TODO:
 
+I have no idea the best practices for pygame so there's probably plenty to change.
+
 Optimizations, effects, etc.
