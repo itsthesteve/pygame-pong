@@ -1,7 +1,9 @@
-import pygame
-from typing import Tuple
-from .events import OUT_OF_BOUNDS
 from random import randrange
+from typing import Tuple
+
+import pygame
+
+from .events import OUT_OF_BOUNDS
 
 
 class Ball:

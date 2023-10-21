@@ -1,6 +1,9 @@
 import pygame
 from pygame.locals import *
-from objects import paddle, ball as b, events as ev, scoreboard
+
+from objects import ball as b
+from objects import events as ev
+from objects import paddle, scoreboard
 
 clock = pygame.time.Clock()
 

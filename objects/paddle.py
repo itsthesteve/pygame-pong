@@ -1,6 +1,8 @@
-import pygame
 from typing import List, Tuple
+
+import pygame
 from pygame.locals import K_DOWN, K_UP, K_s, K_w
+
 from .events import PADDLE_HIT
 
 # Increase this to make the paddle smaller
@@ -28,23 +30,23 @@ class Paddle:
 
 class PaddleManager:
     paddles: List[Paddle]
-    screen: pygame.Surface
-    max_y: int
+    _screen: pygame.Surface
+    _max_y: int
 
     def __init__(self, screen: pygame.Surface):
         PADDLE_HEIGHT = screen.get_height() / PADDLE_SIZE_DIVISOR
 
-        self.screen = screen
-        self.max_y = self.screen.get_height() - PADDLE_HEIGHT
+        self._screen = screen
+        self._max_y = self._screen.get_height() - PADDLE_HEIGHT
 
-        center_y = self.screen.get_height() / 2 - PADDLE_HEIGHT / 2
+        center_y = self._screen.get_height() / 2 - PADDLE_HEIGHT / 2
 
         p1 = Paddle(
             (PADDLE_WIDTH, PADDLE_HEIGHT), (EDGE_MARGIN, center_y), player_num=1
         )
         p2 = Paddle(
             (PADDLE_WIDTH, PADDLE_HEIGHT),
-            (self.screen.get_width() - PADDLE_WIDTH - EDGE_MARGIN, center_y),
+            (self._screen.get_width() - PADDLE_WIDTH - EDGE_MARGIN, center_y),
             player_num=2,
         )
 
@@ -61,7 +63,7 @@ class PaddleManager:
 
         # player 1
         if keys[K_DOWN]:
-            if p1.rect.y <= self.max_y:
+            if p1.rect.y <= self._max_y:
                 p1.rect.y += 10
         if keys[K_UP]:
             if p1.rect.y >= 0:
@@ -69,7 +71,7 @@ class PaddleManager:
 
         # player 2
         if keys[K_s]:
-            if p2.rect.y <= self.max_y:
+            if p2.rect.y <= self._max_y:
                 p2.rect.y += 10
         if keys[K_w]:
             if p2.rect.y >= 0:
@@ -88,4 +90,4 @@ class PaddleManager:
                 pygame.event.post(pygame.event.Event(PADDLE_HIT, {"player": 2}))
 
         for p in self.paddles:
-            pygame.draw.rect(self.screen, (255, 255, 255), p.rect)
+            pygame.draw.rect(self._screen, (255, 255, 255), p.rect)
