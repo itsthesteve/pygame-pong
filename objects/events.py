@@ -1,0 +1,4 @@
+from pygame import USEREVENT
+
+OUT_OF_BOUNDS = USEREVENT + 1
+PADDLE_HIT = USEREVENT + 2

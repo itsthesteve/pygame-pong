@@ -1,6 +1,7 @@
 import pygame
 from typing import List, Tuple
 from pygame.locals import K_DOWN, K_UP
+from .events import PADDLE_HIT
 
 # Increase this to make the paddle smaller
 PADDLE_SIZE_DIVISOR = 4
@@ -9,22 +10,24 @@ PADDLE_WIDTH = 20
 class Paddle():
   srf: pygame.Surface
   rect: pygame.Rect
+  player_num: int
   _x: int
   _y: int
 
-  def __init__(self, size: Tuple[int, int], x: int):
+  def __init__(self, size: Tuple[int, int], x: int, player_num: int):
     self.rect = pygame.Rect(0, 0, size[0], size[1])
-    # self.srf = pygame.Surface(size)
-    # self.srf.fill((255, 255, 255))
-    # self.srf.convert()
-
     self.rect.x = x
     self.rect.y = 0
+    self.player_num = player_num
+
+  def __repr__(self):
+    return f"<Paddle: {self.player_num=} @ ({self.rect=})>"
 
 class PaddleManager():
   paddles: List[Paddle]
   screen: pygame.Surface
   max_y: int
+  last_touch: Paddle
 
   def __init__(self, screen: pygame.Surface):
     PADDLE_HEIGHT = screen.get_height() / PADDLE_SIZE_DIVISOR
@@ -32,8 +35,8 @@ class PaddleManager():
     self.screen = screen
     self.max_y = self.screen.get_height() - PADDLE_HEIGHT
 
-    p1 = Paddle((PADDLE_WIDTH, PADDLE_HEIGHT), 0)
-    p2 = Paddle((PADDLE_WIDTH, PADDLE_HEIGHT), self.screen.get_width() - PADDLE_WIDTH)
+    p1 = Paddle((PADDLE_WIDTH, PADDLE_HEIGHT), 0, player_num=1)
+    p2 = Paddle((PADDLE_WIDTH, PADDLE_HEIGHT), self.screen.get_width() - PADDLE_WIDTH, player_num=2)
 
     self.paddles = [p1, p2]
 
@@ -56,11 +59,15 @@ class PaddleManager():
     # Detect collision with right edge of paddle 1
     if p1.rect.colliderect(ball.rect):
       if abs(ball.rect.left <= p1.rect.right):
+        pygame.event.post(pygame.event.Event(PADDLE_HIT, {"player": "p1"}))
+        self.last_touch = p1
         ball.bounce()
 
     # Detect collision with left edge of paddle 2
     if p2.rect.colliderect(ball.rect):
       if abs(ball.rect.right >= p1.rect.left):
+        pygame.event.post(pygame.event.Event(PADDLE_HIT, {"player": "p2"}))
+        self.last_touch = p2
         ball.bounce()
 
     for p in self.paddles:

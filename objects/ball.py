@@ -1,5 +1,6 @@
 import pygame
 from typing import Tuple
+from .events import OUT_OF_BOUNDS
 
 
 class Ball():
@@ -43,6 +44,7 @@ class Ball():
     self.rect.y += self._vel_y
 
     if self.rect.left <= 0 or self.rect.right >= self._bounds[0]:
+      pygame.event.post(pygame.event.Event(OUT_OF_BOUNDS))
       self.reset()
 
     if self.rect.bottom >= self._bounds[1] or self.rect.top <= 0:
