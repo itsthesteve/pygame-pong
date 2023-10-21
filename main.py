@@ -17,7 +17,7 @@ def main():
   mgr = paddle.PaddleManager(screen)
   ball = b.Ball(24, screen)
 
-  mgr.update()
+  mgr.update(ball)
   ball.update()
 
   # Draw everything first, text etc
@@ -32,7 +32,7 @@ def main():
     # Redraw background
     screen.blit(bg, (0, 0))
 
-    mgr.update()
+    mgr.update(ball)
     ball.update()
 
     pygame.display.flip()
