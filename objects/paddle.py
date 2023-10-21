@@ -1,6 +1,6 @@
 import pygame
 from typing import List, Tuple
-from pygame.locals import K_DOWN, K_UP
+from pygame.locals import K_DOWN, K_UP, K_s, K_w
 from .events import PADDLE_HIT
 
 # Increase this to make the paddle smaller
@@ -11,8 +11,6 @@ class Paddle():
   srf: pygame.Surface
   rect: pygame.Rect
   player_num: int
-  _x: int
-  _y: int
 
   def __init__(self, size: Tuple[int, int], x: int, player_num: int):
     self.rect = pygame.Rect(0, 0, size[0], size[1])
@@ -27,7 +25,6 @@ class PaddleManager():
   paddles: List[Paddle]
   screen: pygame.Surface
   max_y: int
-  last_touch: Paddle
 
   def __init__(self, screen: pygame.Surface):
     PADDLE_HEIGHT = screen.get_height() / PADDLE_SIZE_DIVISOR
@@ -49,6 +46,7 @@ class PaddleManager():
     keys = pygame.key.get_pressed()
     p1, p2 = self.paddles
 
+    # player 1
     if keys[K_DOWN]:
       if p1.rect.y <= self.max_y:
         p1.rect.y += 10
@@ -56,20 +54,25 @@ class PaddleManager():
       if p1.rect.y >= 0:
         p1.rect.y -= 10
 
+    # player 2
+    if keys[K_s]:
+      if p2.rect.y <= self.max_y:
+        p2.rect.y += 10
+    if keys[K_w]:
+      if p2.rect.y >= 0:
+        p2.rect.y -= 10
+
     # Detect collision with right edge of paddle 1
     if p1.rect.colliderect(ball.rect):
       if abs(ball.rect.left <= p1.rect.right):
-        pygame.event.post(pygame.event.Event(PADDLE_HIT, {"player": "p1"}))
-        self.last_touch = p1
         ball.bounce()
+        pygame.event.post(pygame.event.Event(PADDLE_HIT, {"player": 1}))
 
     # Detect collision with left edge of paddle 2
     if p2.rect.colliderect(ball.rect):
       if abs(ball.rect.right >= p1.rect.left):
-        pygame.event.post(pygame.event.Event(PADDLE_HIT, {"player": "p2"}))
-        self.last_touch = p2
         ball.bounce()
+        pygame.event.post(pygame.event.Event(PADDLE_HIT, {"player": 2}))
 
     for p in self.paddles:
-      # self.screen.blit(p.srf, p.position)
       pygame.draw.rect(self.screen, (255, 255, 255), p.rect)
